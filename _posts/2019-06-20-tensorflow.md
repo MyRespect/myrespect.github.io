@@ -45,13 +45,15 @@ Use tf.data datasets for data input.
 ```
 
 #### **Customize the training step**
-```
 If you need more flexibility and control, you can have it by implementing your own training loop. There are three steps:
-    Iterate over a Python generator or tf.data.Dataset to get batches of examples.
-    Use tf.GradientTape to collect gradients.
-    Use a tf.keras.optimizer to apply weight updates to the model's variables.
 
+Iterate over a Python generator or tf.data.Dataset to get batches of examples.
 
+Use tf.GradientTape to collect gradients.
+
+Use a tf.keras.optimizer to apply weight updates to the model's variables.
+
+```
 model = tf.keras.Sequential([
     tf.keras.layers.Conv2D(32, 3, activation='relu',
                            kernel_regularizer=tf.keras.regularizers.l2(0.02),
@@ -67,43 +69,60 @@ model = tf.keras.Sequential([
 optimizer = tf.keras.optimizers.Adam(0.001)
 loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
 
+# Create the metrics
+loss_metric = tf.keras.metrics.Mean(name='train_loss')
+accuracy_metric = tf.keras.metrics.SparseCategoricalAccuracy(name='train_accuracy')
+
 @tf.function
 def train_step(inputs, labels):
-  with tf.GradientTape() as tape:
-    predictions = model(inputs, training=True)
-    regularization_loss = tf.math.add_n(model.losses)
-    pred_loss = loss_fn(labels, predictions)
-    total_loss = pred_loss + regularization_loss
+    with tf.GradientTape() as tape:
+      predictions = model(inputs, training=True)
+      regularization_loss = tf.math.add_n(model.losses)
+      pred_loss = loss_fn(labels, predictions)
+      total_loss = pred_loss + regularization_loss
 
-  gradients = tape.gradient(total_loss, model.trainable_variables)
-  optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+    gradients = tape.gradient(total_loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+    # Update the metrics
+    loss_metric.update_state(total_loss)
+    accuracy_metric.update_state(labels, predictions)
+
 
 for epoch in range(NUM_EPOCHS):
-  for inputs, labels in train_data:
-    train_step(inputs, labels)
-  print("Finished epoch", epoch)
+    # Reset the metrics
+    loss_metric.reset_states()
+    accuracy_metric.reset_states()
+
+    for inputs, labels in train_data:
+      train_step(inputs, labels)
+    # Get the metric results
+    mean_loss = loss_metric.result()
+    mean_accuracy = accuracy_metric.result()
+
+    print('Epoch: ', epoch)
+    print('  loss:     {:.3f}'.format(mean_loss))
+    print('  accuracy: {:.3f}'.format(mean_accuracy))
 ```
 
 #### **Implementing custom layers**
 ```
 class MyDenseLayer(tf.keras.layers.Layer):
-  def __init__(self, num_outputs):
-    super(MyDenseLayer, self).__init__()
-    self.num_outputs = num_outputs
+    def __init__(self, num_outputs):
+      super(MyDenseLayer, self).__init__()
+      self.num_outputs = num_outputs
     
-  def build(self, input_shape):
-    self.kernel = self.add_variable("kernel", 
-                                    shape=[int(input_shape[-1]), 
-                                           self.num_outputs])
+    def build(self, input_shape):
+      self.kernel = self.add_variable("kernel", shape=[int(input_shape[-1]), self.num_outputs])
     
-  def call(self, input):
-    return tf.matmul(input, self.kernel)
+    def call(self, input):
+      return tf.matmul(input, self.kernel)
   
 layer = MyDenseLayer(10)
 print(layer(tf.zeros([10, 5])))
 print(layer.trainable_variables)
 ```
-Implementing custom model
+
+#### **Implementing custom model**
 ```
 class MNISTModel(Model):
     def __init__(self):
