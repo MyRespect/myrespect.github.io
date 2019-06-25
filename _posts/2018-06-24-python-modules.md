@@ -14,7 +14,6 @@ Python has many useful packages, in this post, I make some notes about some pyth
 
 
 #### **Anaconda**
-
 ```
 conda install -c jjhelmus tensorflow-base
 conda -n 指定环境名称(name)
@@ -81,7 +80,6 @@ The following Python language features are not supported in Version 0.41:
 Python库 h5py, h5py文件是存放两类对象的容器，数据集和组，dataset是类似数组类的数据集合，group像文件夹一样的容器，好比python的字典，有key和value，group可以存放dataset或者其他的group.
 
 #### **Subprocess**
-
 One process can fork a subprocess, making the subprocess executes another program, the **subprocess** module in python can achieve that.
 
 subprocess.call([“ls”, “ -l”])

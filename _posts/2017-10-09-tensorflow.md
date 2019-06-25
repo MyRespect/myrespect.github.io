@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Notes for TensorFlow"
+title:  "Notes for TensorFlow1.0"
 categories: Deep_Learning
 tags: TensorFlow
 --- 
@@ -8,20 +8,33 @@ tags: TensorFlow
 * content
 {:toc}
 
-TensorFlow is an open source software library for high performance numerical computation.
+TensorFlow is an open source software library for high performance numerical computation. The original post when I worte was in Tensorflow 1.0, and now Tensorflow is developed into TF2.0. Here I add some new notes about tensorflow.
 
 
 
 
 
-#### **语言基础**
+#### **Basic**
+
+It is still possible to run 1.X code, unmodified (except for contrib), in TensorFlow 2.0:
+
+```
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
+
+The tf.layers module is used to contain layer-functions that relied on tf.variable_scope to define and reuse variables.
+If you were using regularizers of initializers from tf.contrib, these have more argument changes than others.
+# replace tf.contrib.layers.
+tf.keras.layers.Conv2D(32, 3, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(0.04),                input_shape=(28, 28, 1))
+```
+
 ```
 import tensorflow as tf
 
 x=tf.placeholder(tf.float32, shape=...)
 y=tf.variable(0, name='x', dtype=tf.float32)
 z=tf.constant(2.0, shape=..., dtype=...)
-w=tf.get_variable('w', [1,2,3], initializer=tf.contrib.layers.xavier_initializer(seed=0)) #推荐
+w=tf.get_variable('w', [1,2,3], initializer=tf.contrib.layers.xavier_initializer(seed=0))
 
 tf.nn.conv2d(input, filter, strides, padding, use_cudnn_on_gpu=True, data_format='NHWC', dilations=[1, 1, 1, 1], name=None)
 
@@ -56,7 +69,7 @@ tf.split(x,n,0) #ｘ is the Tensor to split, n is the number of splits, 0 is the
 
 tf.nn.depthwise_conv2d(input, filter, strides, padding, rate=None, name=None, data_format=None) # Must have strides = [1, stride, stride, 1], Given a 4D input tensor and a filter tensor of shape [filter_height, filter_width, in_channels, channel_multiplier], containing in_channels convolutional filters of depth 1, depthwise_conv2d applies a different filter to each input channel (expanding from 1 channel to channel_multiplier channels for each), then concatenates the results together. The output has in_channels * channel_multiplier channels.
 ```
-#### **优化方法**
+#### **Optimization Methods**
 
 Gradient Descent: taking gradient step with respect to all m examples on each step
 
@@ -68,9 +81,9 @@ Momentum: taking into account the past gradients to smooth out the update, and s
 
 Adam: combing ideas from RMSProp and Momentum.
 
-#### **保存模型**
+#### **Save Model**
 
-checkpoints是一个二进制文件，把变量映射到对应的tensor中．
+checkpoints is a binary file，which mapping variables into corresponding tensors．
 
 ```
 saver=tf.train.Saver(...variables...)
@@ -90,9 +103,9 @@ flags.DEFINE_float('learning_rate', 0.01, 'Initial learning rate.')
 ```
 From [stackoverflow](https://stackoverflow.com/questions/33932901/whats-the-purpose-of-tf-app-flags-in-tensorflow), note that this module is currently packaged as a convenience for writing demo apps, and is not technically part of the public API, so it may change in future. We recommend that you implement your own flag parsing using argparse or whatever library you prefer.
 
-#### **加载模型**
+#### **Load Model**
 ```
-# freeze保存模型
+# freeze model
 
 pickle.dump(predictions, open("predictions.p", "wb"))
 pickle.dump(history, open("history.p", "wb"))
@@ -116,7 +129,7 @@ freeze_graph.freeze_graph(input_graph_path, input_saver="",
                           filename_tensor_name="save/Const:0",
                           output_graph=output_frozen_graph_name, clear_devices=True, initializer_nodes="")
 
-#加载模型
+#Load Model
 
 with tf.Graph().as_default():
     output_graph_def = tf.GraphDef()

@@ -13,7 +13,7 @@ Today I am going to introduce some methods of evaluation models. I will provide 
 
 
 
-#### **Evaluations:**
+#### **Evaluations**
 
 **Measuring performance for classification:**
 
@@ -41,9 +41,9 @@ plot(pref,main="ROC curve for SMS spam filter", col="blue",lwd=3)
 pref.auc<-performance(pred, measure="auc")
 ```
 
-**评估未来数据的性能：**
+**评估未来数据的性能**
 
-我们常用的几种做法是：
+我们常用的几种做法是:
 
 1. 数据集分为 训练集，验证集，测试集。使用分层随机抽样可以避免不同类别数量过大或过小的问题。
 

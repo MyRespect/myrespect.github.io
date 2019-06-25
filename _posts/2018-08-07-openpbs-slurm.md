@@ -43,6 +43,7 @@ qmgr -c "create node pbs"
 qmgr -c "set  node pbs queue=workq"
 ```
 #### **Use openPBS**
+
 (1) 在主节点上打开PBS服务: /etc/init.d/pbs  start
 对于这些PBS的功能开启有几个相同的参量：status 查看状态 restart 重启stop 终止start 开启;
 (2) 接下来是检查是否可以提交作业pbsnodes –a, 返回free即表示可以提交作业;

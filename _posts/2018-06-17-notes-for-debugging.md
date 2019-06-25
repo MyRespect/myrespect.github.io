@@ -12,8 +12,7 @@ In this post, I note some method to debug and optimize the program, just a few c
 
 
 
-一些经验:
-
+#### **experience**
 1. 根据报错指令的位置查找代码位置：
    addr2line -Cif -e gtc_double_no_output 0x5438c4b
 

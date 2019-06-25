@@ -15,6 +15,7 @@ Linux has many command, in this post, I mainly make some notes when I use Linux 
 
 
 #### **VM startup**
+
 ```
 vmrun start "/home/myrespect/vmware/Ubuntu 64-bit (2)/Ubuntu 64-bit (2).vmx"
 ```
@@ -26,6 +27,7 @@ update-rc.d -f ＜basename＞ remove　//从所有的运行级别中删除指定
  
 
 #### ***/tmp dir***
+
 ubuntu系统如何使保存在tmp目录下的文件在重启系统后不会消失:
 
 1. 打开终端
@@ -38,11 +40,13 @@ ubuntu系统如何使保存在tmp目录下的文件在重启系统后不会消�
 
 
 #### ***source and sh***
+
 source filepath使得当前shell读入路径为filepath的shell文件,并依次执行文件中的语句，使之立即生效．
 
 sh filepath会重新建立一个子shell，在子shell中执行脚本里面的语句，该子shell继承父shell的环境变量，但子shell是新建的，其改变的变量不会被带回父shell，除非使用export．
 
 #### ***fpm***
+
 fpm打包工具
 ```
 gem install fpm
@@ -55,9 +59,15 @@ fpm -s dir -t deb -v 1.0 -n slurm-17.02.6 --prefix=/usr -C /tmp/slurm-build .
 -n 指定包的名字
 
 #### ***cpu and mem***
-
+```
 查看cpu: lscpu
 查看内存: free
+CPU占用最多的前10个进程: 
+ps auxw|head -1;ps auxw|sort -rn -k3|head -10
+内存消耗最多的前10个进程:
+ps auxw|head -1;ps auxw|sort -rn -k4|head -10
+```
+MEM 进程的内存占用率, VSZ 进程所使用的虚存的大小, RSS 进程使用的驻留集大小或者是实际内存的大小(RSS is the "resident set size" meaning physical memory used), TTY 与进程关联的终端.
 
 #### ***find and grep***
 
@@ -150,6 +160,21 @@ SOURCES += hello_win.cpp
 qmake -o Makefile hello.pro
 ```
 
+#### ***screen and virtualenv***
+```
+screen -S yourname 新建一个yourname的会话， 
+screen -r yourname 返回一个yourname的会话
+screen -ls 列出所有会话
+screen -d 执行detach 在保证里面的程序正常运行的情况下让screen 挂起
+
+source virtual/bin/activate 
+deactivate 
+pip freeze -> requirement.txt 
+pip install -r requirement.txt
+pip list 查看环境下的pip包
+```
+
+
 #### ***ｇit submodule***
 
 子模块允许你将一个 Git 仓库当作另外一个Git仓库的子目录。这允许你克隆另外一个仓库到你的项目中并且保持你的提交相对独立。
@@ -162,7 +187,7 @@ sudo service ssh start
 ssh-keygen -t rsa
 ssh-copy-id -i ~/.ssh/id_rsa.pub name@192.168.1.100
 ```
-***其它***
+#### ***Others***
 
 (1) 可以用hostname 进行DNS解析，对/etc/hosts文件进行ip地址和hostname映射；
 GID：组ID,用来标识用户组的唯一标识符
@@ -177,16 +202,17 @@ UID：用户ID,用来标识每个用户的唯一标识符；
 This_DIR=$(cd $(dirname $0); pwd)
 DATA_DIR=${THIS_DIR}/../data
 mkdir -p “$DATA_DIR”
-```
-(5) screen 保证远程回话
-```
-screen -S yourname #新建一个叫yourname的session
-screen -r yourname #回到yourname这个session　
+
 tar -zxf file.tar.gz -C /usr/local/ #-C: 指定解压到的文件路径
 ```
-(6) Git
+
+(5) Git
 ```
-git diff file 查看修改的内容
-git checkout 用版本库的版本替换工作区的版本，当改乱了工作区的某个文件时，想直接丢弃工作区的修改时．
-git reset HEAD file 把暂存区的修改回退到工作区，当改了工作区并且提交到了暂存区时．
+git status
+git add -A	# Add all new and changed files to the staging area
+git commit -m "[commit message]"	# Commit changes
+git push -u origin [branch name]	# Push changes to remote repository (and remember the branch)
+git diff file # Preview changes before merging
+git checkout # Switch to a branch and discard the changes
+git reset HEAD file # Discard changes in staging area
 ```

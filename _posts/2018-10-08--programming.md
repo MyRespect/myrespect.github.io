@@ -14,7 +14,7 @@ I realize that I need to get more practice for programming, so here I will note 
 
 
 
-### **Problem**
+### **Problem1**
 输入一颗二叉树的跟节点和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径.(在返回值的list中，数组长度大的数组靠前)
 
 ```
@@ -49,4 +49,33 @@ public:
 		return result;
 	}
 }
+```
+### **Problem2**
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表
+```
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+class Solution:
+    def __init__(self):
+        self.ptr=None
+    def Convert(self, pRootOfTree):
+        # write code here
+        if pRootOfTree == None:
+            return None
+        self.convert2List(pRootOfTree)
+        while self.ptr.left:
+            self.ptr=self.ptr.left
+        return self.ptr
+    def convert2List(self, tree):
+        if tree==None:
+            return None
+        self.convert2List(tree.left)
+        tree.left=self.ptr
+        if self.ptr:
+            self.ptr.right=tree
+        self.ptr=tree
+        self.convert2List(tree.right)
 ```

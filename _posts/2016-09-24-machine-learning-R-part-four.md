@@ -15,7 +15,7 @@ Now I start to learn neural network and SVM. Actually, I am a bit more familiar 
 
 这两个是具有巨大潜能的机器学习方法，相对来说也比较复杂，在此处我不打算展开细节，简单介绍一下他们在R中的应用吧。
 
-#### **Neural Network：**
+#### **Neural Network**
 
 哈哈，首先普及一点生物知识。生物神经元细胞的树突通过一个生化过程（神经冲动根据其相对重要性或者频率加权的生化过程）来接受输入信号。那么这个生化过程是什么呢？ 细胞体开始积累输入信号，达到一个阈值后， 细胞便会充满活力击破，然后输出信号通过一个电化过程传送到轴突，在轴突末端，该电信信号在此被处理成一种化学信号，穿过成为突触的一个微小间隙传递到相邻的神经元。
 
@@ -28,7 +28,7 @@ m<-neuralnet(target ~ predicetions, data=mydata, hidden=1);
 p<-compute(m,test);
 ```
 
-#### **SVMs：**
+#### **SVMs**
 支持向量，就是每个类中最接近最大间隔超平面的点。
 
 线性核函数（也可以说没有用核函数），S型核函数，高斯核函数（Gaussian RBF kernel）；

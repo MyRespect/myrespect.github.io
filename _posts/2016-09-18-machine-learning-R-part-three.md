@@ -13,7 +13,7 @@ As time goes by, I go to the part about regression. It goes without saying that 
 
 
 
-#### **Regression：**
+#### **Regression**
 
 我们可以回归方法预测数值型数据，主要关注因变量和自变量之间的关系，比较典型的有线性回归，逻辑回归和泊松回归。线性回归假设因变量的分布为正态分布，但这种分布是不理想的。它的作用主要有：
  
@@ -35,9 +35,9 @@ reg <- function(y, x) {
   solve(t(x) %*% x) %*% t(x) %*% y
 }
 ```
-其中 solve()执行矩阵的逆运算，t()用来将矩阵转制，%*%将两个矩阵相乘。as.matrix()将数据强制转换成矩阵形式， cbind() 用来将额外的一列添加到矩阵x中。题外话，通过比较，我发现了matlab在进行矩阵运算的方便之处。
+as.matrix()将数据强制转换成矩阵形式， cbind() 用来将额外的一列添加到矩阵x中。题外话，通过比较，我发现了matlab在进行矩阵运算的方便之处。
 
-**探索和准备数据：** 
+**探索和准备数据:** 
 
 使用cor()创建相关系数矩阵来探索特征之间的关系，使用pairs()创建散点矩阵来可视化特征之间的关系，改进后的散点矩阵，可以用psych包中的pairs.panels()函数创建。
 
@@ -48,7 +48,7 @@ cor(insurance[c("age", "bmi", "children", "charges")])
 # visualing relationships among features: scatterplot matrix
 pairs(insurance[c("age", "bmi", "children", "charges")])
 ```
-**基于数据训练模型：** 
+**基于数据训练模型:** 
 
 使用lm()函数对数据拟合一个线性回归模型：
 
@@ -56,13 +56,13 @@ pairs(insurance[c("age", "bmi", "children", "charges")])
 model <- lm(distress_ct ~ temperature + pressure + launch_id, data = launch)
 `
 
-**评估模型性能：**
+**评估模型性能:**
 
 summary()命令来分析预测所存储的回归模型：
 
 `summary(model)`
  
-**提高模型性能：**
+**提高模型性能:**
  
 1. 提高模型性能，添加非线性关系, 增加自变量的次数。 
 2. 如果一个特征的影响是不累积的，而是当特征的取值达到一个给定的阈值后才产生影响，将一个数值型变量转换为一个二进制指标。

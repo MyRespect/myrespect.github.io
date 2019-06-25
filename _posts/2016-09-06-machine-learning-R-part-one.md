@@ -13,7 +13,6 @@ In the following series of blogs, I will make some notes about the book "MACHINE
 
 
 
-#### **Part one：**
 
 1. Machine learning algorithms are virtually a prerequisite for data mining but the opposite is not true.   
 
@@ -21,9 +20,8 @@ In the following series of blogs, I will make some notes about the book "MACHINE
 
 3. Collecting data -> Exploring and preparing the data -> Trainga model on the data -> Evaluating model performance -> Improving model performance.  
 
-#### **Part two：**  
 
-##### **Data Structure in R:**
+##### **Data Structure in R**
 
 向量，一个向量包含的所有元素必须是一样的类型；NA 表示缺失值； NULL 表示没有任何值；其他类型包括 整型，数值型，字符型，逻辑型（TRUE, FALSE）；建立向量举例： subject_name <- c("Jason","Tom","Bob");  
 
@@ -35,7 +33,7 @@ In the following series of blogs, I will make some notes about the book "MACHINE
 
 矩阵，只能包含单一类型的数据； 建立矩阵举例： m <- matrix(c('a','b','c','d'), nrow=2);  
 
-##### **Exploring the Structure of Data:** 
+##### **Exploring the Structure of Data** 
 
 I just noted some main key functions in R for exploring the structure of Data, and the most important things are learning to read the manual and using Google.  
  

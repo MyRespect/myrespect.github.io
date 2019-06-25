@@ -13,7 +13,7 @@ In this blog, I would like to share some knowledge about market basket analysis.
 
 
 
-#### **Apriori Algorithm：**
+#### **Apriori Algorithm**
 
 关联规则是解决大数据问题的一种方法，作为一种无监督的学习算法，它能够从没有任何关于模式的先验知识的大型数据库中提取知识。 
 
@@ -25,9 +25,15 @@ In this blog, I would like to share some knowledge about market basket analysis.
 
 度量关联规则的兴趣度： 
 
-**支持度**(support)和**置信度**(confidence)，如果一个规则同时具有高支持度和置信度，则称为强规则。支持度是指项集在数据中出现的频率，support(A,B)与P(A,B)是一样的。置信度表示交易中项或者项集X的出现导致项或者项集Y出现的比例，confidence(A->B)与P(B|A)是一样的。**提升度**(lift)，假设知道一类商品已经被购买，提升都就是用来度量一类商品相对于它的一般购买率，lift(x->y)=confidence(x->y)/support(x)。
+**support and confidence**
 
-**Aprior算法**创建规则主要分两步。第一步，识别所有满足最小支持度阈值的项集；第二步，根据满足最小置信度阈值的这些项来创建规则。
+如果一个规则同时具有高支持度和置信度，则称为强规则。支持度是指项集在数据中出现的频率,support(A,B)与P(A,B)是一样的;置信度表示交易中项或者项集X的出现导致项或者项集Y出现的比例，confidence(A->B)与P(B\|A)是一样的。
+
+**提升度**(lift)，假设知道一类商品已经被购买，提升都就是用来度量一类商品相对于它的一般购买率，lift(x->y)=confidence(x->y)/support(x)。
+
+**Aprior算法**
+
+创建规则主要分两步。第一步，识别所有满足最小支持度阈值的项集；第二步，根据满足最小置信度阈值的这些项来创建规则。
 
 首先是数据准备，为交易数据创建一个**稀疏矩阵**，稀疏矩阵的每一行表示一次交易，用列表示可能出现在购物者购物篮的每一件商品。稀疏矩阵实际在内存中没有存储完整的矩阵，知识存储了一个商品所占用的单元，这样的话该结构的内存效率比一个大小相当的矩阵或者数据框的内存效率更高。 
 
@@ -50,7 +56,7 @@ myrules <- apriori(data=mydata, parameter=list(support=0.1,confidence=0.8,minlen
 #minlen:the least number of rules
 ```
 
-#### **K-Means Cluster：**
+#### **K-Means Cluster**
 
 聚类的原则是一个组内的记录，彼此必须非常相似，而与组外的记录截然不同。 
 

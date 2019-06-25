@@ -23,7 +23,7 @@ In this blog, I will introduce a set of techniques for improving the predictive 
 
 我们用一个例子来说明如何通过调整多个模型来提高性能： 
 
-**首先，我们来创建简单的调整模型:**
+**首先，我们来创建简单的调整模型**
 
 ```
 library(caret)
@@ -37,7 +37,7 @@ p<-predict(m,credit，type="prob")
 
 set.seed()函数用来初始化R的随机数发生器，通过设定seed参数，可以使随机数遵循一个预先设定的序列，可以使得train()这样使用随机抽样的模拟方法能够在重复运行中得到相同的结果，如果分享代码并尝试得到之前相同的结果，是非常有用的。
 
-**然后，我们来定制调整过程：**
+**然后，我们来定制调整过程**
 
 我们使用trainControl()函数来创建一系列的配置选项，可以使用?trainControl命令来详细查看。然后我们创建用来优化参数的表格。expand.grid()函数利用所有的值的组合创建数据框。
 
@@ -49,7 +49,7 @@ m<-train(default~.,data=credit,method="C5.0",metric="Kappa",trControl=ctrl,tuneG
 这样，我们已经定制好了我们的train()实验模型了，我们使用了selectionFunction函数参数在各个候选模型中选择最佳的模型，这里我们使用了oneSE函数，表示选择了最好性能标准差之内的最简单的候选者，其他的还有best, Tolerance函数参数。
 
 
-**第二个问题，如何使用元学习来提高模型的性能呢？ **
+**第二个问题，如何使用元学习来提高模型的性能呢？**
 
 元学习方法，简单来讲是将多个模型合并组成一个更强的组。它可以包含从通过自动迭代设计决策来提升性能的简单算法到借鉴了进化生物学的自修改和自适应的学习方式的复杂算法。 
 
