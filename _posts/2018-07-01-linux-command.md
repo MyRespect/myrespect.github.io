@@ -61,7 +61,14 @@ fpm -s dir -t deb -v 1.0 -n slurm-17.02.6 --prefix=/usr -C /tmp/slurm-build .
 #### ***cpu and mem***
 ```
 查看cpu: lscpu
+查看usb: lsusb
 查看内存: free
+查看内存: htop
+系统内核: uname -a
+每秒显示nvidia-gpu的使用: watch -n nvidia-smi
+清空当前登录终端的历史命令: history -c
+读取存放记录的文件, history -r ~/.bash_history
+ubuntu查看cuda版本, cat /usr/local/cuda/version.txt  nvcc -V
 CPU占用最多的前10个进程: 
 ps auxw|head -1;ps auxw|sort -rn -k3|head -10
 内存消耗最多的前10个进程:

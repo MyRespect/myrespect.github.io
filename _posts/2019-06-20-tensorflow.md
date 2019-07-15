@@ -27,31 +27,66 @@ TensorFlow is an open source software library for high performance numerical com
 5.	使用tf.function时需要注意，将一个在动态图中可行的函数转换成静态图需要用静态图的方式思考该函数是否可行，在动态图中, tf.variable 时一个普通的python变量, 超出了其作用域范围就会被销毁. 而在静态图中, tf.varuable 则是计算图中一个持续存在的节点, 不受python的作用域的影响.  我们可以将tf.variable作为函数的参数传入，将tf.variable作为类属性来调用.
 
 ```
-Every tf.Session.run call should be replaced by a Python function.
+(1) Every tf.Session.run call should be replaced by a Python function.
     The feed_dict and tf.placeholders become function arguments.
     The fetches become the function's return value.
-Use tf.Variable instead of tf.get_variable.
-Prefer tf.keras.Model.fit over building your own training loops.
-Use tf.data datasets for data input. 
-    import tensorflow_datasets as tfds
-    datasets, info = tfds.load(name='mnist', with_info=True, as_supervised=True)
-    mnist_train, mnist_test = datasets['train'], datasets['test']
-    def scale(image, label):
-        image = tf.cast(image, tf.float32)
-        image /= 255
-        return image, label
-    train_data = mnist_train.map(scale).shuffle(BUFFER_SIZE).batch(BATCH_SIZE).take(5)
-    test_data = mnist_test.map(scale).batch(BATCH_SIZE).take(5)
+(2) Use tf.Variable instead of tf.get_variable.
+(3) Prefer tf.keras.Model.fit over building your own training loops.
+(4) Use tf.data datasets for data input.
+```
+```
+import tensorflow_datasets as tfds
+datasets, info = tfds.load(name='mnist', with_info=True, as_supervised=True)
+mnist_train, mnist_test = datasets['train'], datasets['test']
+def scale(image, label):
+    image = tf.cast(image, tf.float32)
+    image /= 255
+    return image, label
+train_data = mnist_train.map(scale).shuffle(BUFFER_SIZE).batch(BATCH_SIZE).take(5)
+test_data = mnist_test.map(scale).batch(BATCH_SIZE).take(5)
+```
+
+#### **Using GPU**
+You can specify the running device by tf.device(), for example, "/cpu:0" is the cpu of your machine, "/device:GPU:0":The first GPU of your machine, "/device:GPU:1":The second GPU of your machine.
+```
+# specify in code, or you can set when you run the python file
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+
+# allocate gpu according to its need
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+
+# specifiy GPU memory fraction
+config.gpu_options.per_process_gpu_memory_fraction = 0.4
+
+# TF2.0
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    for gpu in gpus:
+      tf.config.experimental.set_memory_growth(gpu, True)
+
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    tf.config.experimental.set_visible_devices(gpus[0], 'GPU')
 ```
 
 #### **Customize the training step**
 If you need more flexibility and control, you can have it by implementing your own training loop. There are three steps:
 
-Iterate over a Python generator or tf.data.Dataset to get batches of examples.
+(1) Iterate over a Python generator or tf.data.Dataset to get batches of examples.
 
-Use tf.GradientTape to collect gradients.
+(2) Use tf.GradientTape to collect gradients.
 
-Use a tf.keras.optimizer to apply weight updates to the model's variables.
+(3) Use a tf.keras.optimizer to apply weight updates to the model's variables.
+
+Calling minimize() takes care of both computing the gradients and applying them to the variables. If you want to process the gradients before applying them you can instead use the optimizer in three steps:
+
+(1) Compute the gradients with tape.gradient().
+
+(2) Process the gradients as you wish.
+
+(3) Apply the processed gradients with apply_gradients().
 
 ```
 model = tf.keras.Sequential([
